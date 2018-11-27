@@ -31,7 +31,8 @@ city_homicides = city_homicides %>%
 mutate(victim_race = fct_relevel(ifelse(victim_race == "White", "white", "non-white"), "white")) %>%
 mutate(victim_race = fct_relevel(victim_race, "White")) 
 ```
-  
+ 
+ The dataset describes the data on homicides in 50 cities in US. It contains `r ncol(city_homicides)` columns and `r nrow(city_homicides)` rows. The variables in this data set are `r colnames(city_homicides)`. I used glm function to fit the logistic regression.
   
 ```{r}
 baltimore = city_homicides %>%
@@ -48,8 +49,7 @@ mutate(OR = exp(estimate),
   select(term, log_OR = estimate, OR, lower_bound, upper_bound, p.value) %>% 
   knitr::kable(digits = 3)
 ```
-
-The odds ratio for nonwhite is 0.441, and the 95% confidence interval is (0.313, 0.620)
+The odds ratio for nonwhite is 0.441, and the 95% confidence interval is (0.313, 0.620). 
 
 ```{r}
 city_data = city_homicides %>%
@@ -83,7 +83,7 @@ ggplot(aes(x = city_state, y = OR)) +
   ) 
 
 ```
-
+From the plot, Boston, MA has the lowest OR value among all the cities, while Tempa, Florida has the highest OR. 
 problem 2
 ```{r}
 Birthweight_data = read_csv(file = "./birthweight.csv") %>%
@@ -97,7 +97,9 @@ mult.fit <- lm(bwt ~ ., data=Birthweight_data)
 step(mult.fit, direction='backward')
 
 ```
-I use the stepwise backward method to build the model.
+
+he dataset of child birth weight contains `r ncol(Birthweight_data)` columns and `r nrow(Birthweight_data)` rows. 
+
 ```{r}
 build_own_model = lm(bwt ~ babysex + bhead + blength + delwt +  
     gaweeks + mheight + mrace + parity + ppwt + smoken, data = Birthweight_data) 
@@ -114,6 +116,9 @@ Birthweight_data %>%
   ggplot(aes(x = pred, y = resid)) + geom_point()
 
 ```
+
+I used the stepwise backward regression selection method to build my model. The variables in my model contribute significantly to the birthweight. The adjusted r square value is 0.7173, which means this model explain about 71 percentage of the data. 
+The plot I made showed that the residuals get smaller when we have larger prediction value, while the residuals were very large when our prediction value is smaller than 1000, which is lack of accuracy
 
 ```{r}
 ##two other models
@@ -161,5 +166,5 @@ cv_df %>%
   ggplot(aes(x = model, y = rmse)) + geom_violin() + ggtitle("rmse for for each model ")
 ```
 
-The model lie at the lowest level has the relatively lowest rmse. Since we want to minimize rmse, the first model is the best. 
+The violin model lies at the lowest level has the relatively lowest rmse. Since we want to minimize rmse, the first model, the one we designed, is the best.
 

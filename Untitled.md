@@ -41,6 +41,8 @@ mutate(victim_race = fct_relevel(victim_race, "White"))
 
     ## Warning: Unknown levels in `f`: White
 
+The dataset describes the data on homicides in 50 cities in US. It contains 14 columns and 48507 rows. The variables in this data set are uid, reported\_date, victim\_last, victim\_first, victim\_race, victim\_age, victim\_sex, city, state, lat, lon, disposition, city\_state, resolved. I used glm function to fit the logistic regression.
+
 ``` r
 baltimore = city_homicides %>%
   filter(city == "Baltimore")
@@ -57,14 +59,13 @@ mutate(OR = exp(estimate),
   knitr::kable(digits = 3)
 ```
 
-| term                  |  log\_OR|     OR|  lower\_bound|  upper\_bound|  p.value|
-|:----------------------|--------:|------:|-------------:|-------------:|--------:|
-| (Intercept)           |    1.186|  3.274|         2.067|         5.186|    0.000|
-| victim\_age           |   -0.007|  0.993|         0.987|         0.999|    0.032|
-| victim\_sexMale       |   -0.888|  0.412|         0.315|         0.537|    0.000|
-| victim\_racenon-white |   -0.820|  0.441|         0.313|         0.620|    0.000|
-
-The odds ratio for nonwhite is 0.441, and the 95% confidence interval is (0.313, 0.620)
+| term                    |    log\_OR|        OR|    lower\_bound|    upper\_bound|               p.value|
+|:------------------------|----------:|---------:|---------------:|---------------:|---------------------:|
+| (Intercept)             |      1.186|     3.274|           2.067|           5.186|                 0.000|
+| victim\_age             |     -0.007|     0.993|           0.987|           0.999|                 0.032|
+| victim\_sexMale         |     -0.888|     0.412|           0.315|           0.537|                 0.000|
+| victim\_racenon-white   |     -0.820|     0.441|           0.313|           0.620|                 0.000|
+| The odds ratio for nonw |  hite is 0|  .441, an|  d the 95% conf|  idence interva|  l is (0.313, 0.620).|
 
 ``` r
 city_data = city_homicides %>%
@@ -97,9 +98,7 @@ ggplot(aes(x = city_state, y = OR)) +
   ) 
 ```
 
-![](Untitled_files/figure-markdown_github/unnamed-chunk-4-1.png)
-
-problem 2
+![](Untitled_files/figure-markdown_github/unnamed-chunk-4-1.png) From the plot, Boston, MA has the lowest OR value among all the cities, while Tempa, Florida has the highest OR. problem 2
 
 ``` r
 Birthweight_data = read_csv(file = "./birthweight.csv") %>%
@@ -288,7 +287,7 @@ step(mult.fit, direction='backward')
     ##      mrace4       parity         ppwt       smoken  
     ##    -100.678       96.305       -2.676       -4.843
 
-I use the stepwise backward method to build the model.
+he dataset of child birth weight contains 21 columns and 4342 rows.
 
 ``` r
 build_own_model = lm(bwt ~ babysex + bhead + blength + delwt +  
@@ -359,6 +358,8 @@ Birthweight_data %>%
 ```
 
 ![](Untitled_files/figure-markdown_github/unnamed-chunk-6-1.png)
+
+I used the stepwise backward regression selection method to build my model. The variables in my model contribute significantly to the birthweight. The adjusted r square value is 0.7173, which means this model explain about 71 percentage of the data. The plot I made showed that the residuals get smaller when we have larger prediction value, while the residuals were very large when our prediction value is smaller than 1000, which is lack of accuracy
 
 ``` r
 ##two other models
@@ -481,4 +482,4 @@ cv_df %>%
 
 ![](Untitled_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
-The model lie at the lowest level has the relatively lowest rmse. Since we want to minimize rmse, the first model is the best.
+The violin model lies at the lowest level has the relatively lowest rmse. Since we want to minimize rmse, the first model, the one we designed, is the best.
